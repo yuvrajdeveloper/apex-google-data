@@ -32,10 +32,17 @@ public class GoogleService {
 		getFeedMethod('GET', feedURL, null, CONTENT_TYPE_URL);
 		
 		GoogleData result = new GoogleData( responseXml );
-		if ( result.errors.size() > 0 ) { 
-			System.debug( ' fatal error ');
-			result.feed.dump();
-		}	
+		
+		try {  // this fails if the response is HTML, not XML
+			if ( result.errors.size() > 0 ) { 
+				System.debug( ' fatal error ');
+				result.feed.dump();
+			}	
+		} catch (System.NullPointerException npe) { 
+			// catch the case of response is HTML
+			system.debug( feedURL + ' returned HTML'); 
+			system.debug( response.getBody() );
+		}
 		
 		return result;
 	}
