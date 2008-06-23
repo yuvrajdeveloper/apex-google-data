@@ -1,0 +1,3 @@
+= Jump to developer.force.com =
+
+[http://wiki.apexdevnet.com/index.php/Google_Data_API_Toolkit Force.com Toolkit for Google Data APIs ]
