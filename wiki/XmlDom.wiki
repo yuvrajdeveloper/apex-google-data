@@ -1,1 +1,0 @@
-http://code.google.com/p/apex-google-data/source/browse/trunk/google_data_toolkit/src/unpackaged/classes/XMLDom.cls
