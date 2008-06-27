@@ -93,8 +93,8 @@ public class AuthSubUtil {
             system.debug( 'invalid token, or response from AuthSubSessionToken, no token');
             return null;
         }
-        system.debug('session token is: '+atoken[1]);
-        return atoken[1];
+        system.debug('session token is: '+atoken[1].trim());
+        return atoken[1].trim();
     }
 
     public  static void     revokeToken(String token) {
