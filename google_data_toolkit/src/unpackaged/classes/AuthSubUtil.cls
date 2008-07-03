@@ -77,6 +77,24 @@ public class AuthSubUtil {
         // must be done by the end user, in a browser...
         return authRequest + '?next='+ twiceEncodedNext + '&scope='+ scope + '&session=1&secure=0'; 
     }
+    
+    //  Creates the pagereference to be used to retrieve an AuthSub token.
+    public static pagereference    getRequestPageReference(string proto, string host, 
+                                            String nextUrl, String scope) {
+        // first we need to go thru the Salesforce GoogleAuthSub callback servlet
+        // and that (next destination) needs to be encoded
+        string encodedNext = proto + '://' + host +     
+            '/_ui/core/google/GoogleAuthSubCallback?url=' + 
+            EncodingUtil.urlEncode( nextUrl, 'UTF-8' ); 
+        
+        // then we need to encode again to allow it to pass thru to the google authsub sevlet
+        //string twiceEncodedNext =  EncodingUtil.urlEncode( encodedNext, 'UTF-8' ) ; 
+        
+        // finaly construct the first step in the redirect process, send your users to this url
+        // must be done by the end user, in a browser...
+        return  new PageReference( authRequest + '?next='+ encodedNext + '&scope='+ scope + '&session=1&secure=0'); 
+    }
+
          
     //    Exchanges the one time use token returned in the URL for a session token.
     public static String    exchangeForSessionToken(String onetimeUseToken ) { 
@@ -150,5 +168,19 @@ public class AuthSubUtil {
         system.assert(  expected == checkUrl , ' mis match request url '); 
     }
     
+
+	public static testMethod void  testgetRequestPageReference(){
     
+        String strProto = 'https';
+        String strHost = 'na2.salesforce.com';
+        String strNextUrl = '/apex/authsub';
+        String strScopeUrl = 'http://spreadsheets.google.com/feeds/';
+              
+       	PageReference p = AuthSubUtil.getRequestPageReference( strProto, strHost, strNextUrl, strScopeUrl);
+      	system.debug (p); 
+    	
+    	STRING expected = 'https://www.google.com/accounts/AuthSubRequest?next=https%3A%2F%2Fna2.salesforce.com%2F_ui%2Fcore%2Fgoogle%2FGoogleAuthSubCallback%3Furl%3D%252Fapex%252Fauthsub&scope=http%3A%2F%2Fspreadsheets.google.com%2Ffeeds%2F&secure=0&session=1';
+    	system.assert( expected == p.getUrl() , 'page reference genreated is bad'); 
+    }
+        
 }
