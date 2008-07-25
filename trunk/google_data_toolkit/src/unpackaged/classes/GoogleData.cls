@@ -102,6 +102,9 @@ public class GoogleData {
 				return (content==null?  '' : content); 	} 
 			set { e.getElementByTagName('content').nodeValue = value; } }
 
+		public string rowColId(){
+			return 'R'+row+'C'+col;
+		}
 		// return the xml needed to update this cell, used in building a batch update
 		public string toXmlBatchEntryString() {
 			string ret= '<entry>\n' + '<batch:id>R'+row+'C'+col+'</batch:id>\n' ;
@@ -178,7 +181,11 @@ public class GoogleData {
 	 		get { return GoogleData.getRelLink( w, 
 	 			'http://schemas.google.com/g/2005#post'); }
 	 	} 
-	 	
+
+	 	public string editUrl { 
+	 		get { return GoogleData.getRelLink( w, 
+	 			'edit'); }
+	 	}	 	
 	 	public list<cell> cells { get ; set; } 
 	 	
 	 	public list<cell> cellFactory(list<xmldom.element> cellsin) { 
@@ -191,6 +198,17 @@ public class GoogleData {
 			return cells;
 		}
 		
+	 	public Map<String,cell> cellFactoryAsMap(list<xmldom.element> cellsin) { 
+			// clear out the old list?
+			Map<String,cell> cellMap = new Map<String,cell>(); 
+			GoogleData.Cell currCell;
+			for (xmldom.element ee: cellsin) { 
+				currCell =  new GoogleData.Cell(ee);
+				cellMap.put(currCell.rowColId(),currCell); 	
+			} 
+			return cellMap;
+		}
+
 		string escape(string cc) { return cc.replace('&','&amp;'); }
 		
 		// set a value by using row column numbers
