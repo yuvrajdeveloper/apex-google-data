@@ -27,6 +27,17 @@ public class SpreadsheetService {
 		t = EncodingUtil.urlEncode(t,'UTF-8');
 		return getFeed(	SPR_SHEET_LIST_URL + '?title=' +t +'&title-exact=true' );
 	}
+
+	public xmldom.Element getSpreadsheetById(string id) { 
+		GoogleData entryList = getFeed(	SPR_SHEET_LIST_URL);
+		for(xmldom.Element entry:entryList.entries){
+			String idVal = entry.getElementByTagName('id').nodeValue;
+			if(entry.getElementByTagName('id').nodeValue.indexOf(id) > -1){
+				return	entry;
+			}	
+		}
+		return null;
+	}
 	
 	/* more to add 
 	Spreadsheets query parameters reference
@@ -60,7 +71,7 @@ public class SpreadsheetService {
 		// cells feed looks like this 
 		//http://spreadsheets.google.com/feeds/cells/o15385646727495067185.2758575337567427847/od4/private/full
 		string batchFeedUrl = w.getCellFeedUrl() + '/batch'; 
-		service.makePostRequest( batchFeedUrl, w.getBatchFeedListBody(celList) );  
+		service.makePostRequest( batchFeedUrl, w.getBatchFeedListBody(celList) );
 	}
 
 	public void updateCell ( GoogleData.Worksheet w, GoogleData.Cell cel ) {
@@ -72,10 +83,23 @@ public class SpreadsheetService {
 		service.makePutRequest( w.edit, body ); 	
 	}
 	
- 	public void insertWorksheet(xmldom.element oneSpreadSheet, GoogleData.Worksheet w) { 
+ 	public GoogleData.Worksheet insertWorksheet(xmldom.element oneSpreadSheet, GoogleData.Worksheet w) { 
 		string body = w.toXmlString(); 		
 		oneSpreadSheet.dumpall();
-		service.makePostRequest( GoogleData.getRelLink( oneSpreadSheet, WkSheetFeed), body ); 	
+		service.makePostRequest( GoogleData.getRelLink( oneSpreadSheet, WkSheetFeed), body );
+		if(service.response.getStatusCode() == 200 || service.response.getStatusCode() == 201){
+			xmldom doc = service.responseXml;
+			GoogleData temp = new GoogleData(doc);
+			return new GoogleData.Worksheet(temp.feed);
+		}
+		return null;
+		
+	}
+
+ 	public Boolean deleteWorksheet(GoogleData.Worksheet w) {
+		string editFeedUrl = w.editUrl; 
+		service.makeDeleteRequest(editFeedUrl);
+		return true;
 	}
 	 
 	public void insertRow( GoogleData listFeed, xmldom.element row) {
