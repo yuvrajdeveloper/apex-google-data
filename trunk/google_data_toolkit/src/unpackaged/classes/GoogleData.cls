@@ -86,9 +86,37 @@ public class GoogleData {
 	public class Cell {
 		xmldom.element e; 
 		public Cell(xmldom.element ee) { e=ee;
-			cell = e.getElementByTagName('gs:cell'); 	// for performance fill propos now
+			cell = e.getElementByTagName('gs:cell'); 	// for performance fill props now
 		 	row = cell.getAttribute('row');			// these will be accessed in a loop 
 		 	col = cell.getAttribute('col');
+		}
+		
+		/*  construct a cell in memory, apply the edit url ending with latest,
+			assign row and col, user must set content on this cell before passing  
+			this cell to updateCells()
+			*/
+		public Cell(worksheet w, integer newrow, integer newcol ) {
+			row = String.valueof(newrow); col = String.valueof(newcol);
+			// construct a cell in memory, apply the edit url ending with 'latest'
+			// assign row and col
+			this.e = new xmldom.element('entry');
+			xmldom.element gscell = new xmldom.element('gs:cell');
+			gscell.attributes.put('col', col );
+			gscell.attributes.put('row', row );
+			e.appendChild( gscell );
+ 	
+	 		xmldom.element id = new xmldom.element('id');
+			id.nodeValue = w.getCellFeedUrl() + '/' + rowColId();
+	 		e.appendChild(id);
+	 			 		
+	 		xmldom.element link = new xmldom.element('link');
+			link.attributes.put('href',w.getCellFeedUrl() + '/'+rowColId() +'/latest');
+			link.attributes.put('rel','edit');
+			link.attributes.put('type','application/atom+xml');
+			
+	 		e.appendChild(link);
+	 		e.appendChild(new xmldom.element('content'));
+			// e is now an empty cell that can be used to overwrite a cell in the worksheet		
 		}
 		
 		public string id { get { return e.getValue('id'); } } 
