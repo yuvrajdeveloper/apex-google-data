@@ -18,17 +18,25 @@ public class TranslateService {
     } 
     
     private googledata parseResponse(string body ) { 
-    	list<string> ar = body.split(',');
-    	json.clear();
-    	for ( string tmp : ar) {
-    		tmp = tmp.replaceAll('["\\{\\}]','');
-    		string[] jj = tmp.split(':',2); 
-    		json.put(jj[0].trim(),jj[1].trim());
-    	}
-		try { 
-    	json.put( json.get('responseData').split(':')[0],json.get('responseData').split(':')[1] );
-		} catch (exception e) { } 
     	
+		body = body.replaceAll('\\\\u0026#39;','\''); // are there others?
+    		
+    	list<string> ttt = new list<string>();
+    	for ( string a : body.split('["\\{\\}]') ) { 
+    		a = a.trim(); 
+    		if ( a != null && a != '' && a != ':' && a != ',' && a != 'responseData') { 
+    			a = a.replaceAll(': ','');
+    			a = a.replaceAll(',$','');
+    			ttt.add(a);    
+    		} 
+    	} 
+    
+    	json.clear();
+    	for ( integer i = 0; i < ttt.size(); i++ )  {
+    		json.put(ttt[i].trim(),ttt[i+1].trim());
+    		i++;
+    	}
+		
     	if (debug > 1) { 
     		system.debug(json);
     		for(string key : json.keyset()) { 
@@ -49,6 +57,20 @@ public class TranslateService {
   	/* 
  	 * test methods below here
  	 */
+ 	public static testMethod void t5() { 
+ 		TranslateService s = new TranslateService();
+ 		s.debug = 3;
+ 		string ss = 'Edge, founded in 1998, is a start-up based in Austin, TX. The company designs and manufactures a device to convert music from one digital format to another. Edge sells its product through retailers and its own website.';
+ 		// s.translate(ss,'en|it');
+       	
+ 	
+ 		s.parseResponse(	'{"responseData": {"translatedText":"Edge, fondata nel 1998, è una start-up con sede a Austin, TX. L&#39;azienda progetta e produce un dispositivo per convertire la musica digitale da un formato ad un altro. Edge vende i suoi prodotti attraverso rivenditori al dettaglio e il suo sito web."}, "responseDetails": null, "responseStatus": 200}'
+	);
+ 		system.debug( s.translatedText );
+    	system.debug( s.responseStatus ); 
+    	system.debug( s.responseDetails ); 
+ 	}
+ 	
  	public static testMethod void t4() { 
  		TranslateService s = new TranslateService();
  		s.debug = 3;
