@@ -112,7 +112,7 @@ SOFTWARE.
 			if ( this.values != null ) { 
 				string ret = '['; 
 				for ( value v:this.values) { 
-					system.debug( v );
+					//system.debug( v );
 					ret += v.valueToString() + ','; 
 				}
 				return ret.substring(0,ret.length()-1) + ']'; 
@@ -840,66 +840,6 @@ SOFTWARE.
         return sb.toString();
     }*/
 
-    /* **
-     * Remove a name and its value, if present.
-     * @param key The name to be removed.
-     * @return The value that was associated with the name,
-     * or null if there was no value.
-    
-    public Object remove(String key) {
-        return this.map.remove(key);
-    }
-    */
-    /* **
-     * Get an enumeration of the keys of the JSONObject.
-     * The keys will be sorted alphabetically.
-     *
-     * @return An iterator of the keys.
-    
-    public Iterator sortedKeys() {
-      return new TreeSet(this.map.keySet()).iterator();
-    }
-    */
-    /* **
-     * Throw an exception if the object is an NaN or infinite number.
-     * @param o The object to test.
-     * @ If o is a non-finite number.
-    
-    static void testValidity(Object o)  {
-        if (o != null) {
-            if (o instanceof Double) {
-                if (((Double)o).isInfinite() || ((Double)o).isNaN()) {
-                    throw new JSONException(
-                        'JSON does not allow non-finite numbers.');
-                }
-            } else if (o instanceof Float) {
-                if (((Float)o).isInfinite() || ((Float)o).isNaN()) {
-                    throw new JSONException(
-                        'JSON does not allow non-finite numbers.');
-                }
-            }
-        }
-    } */
-
-
-    /* **
-     * Produce a JSONArray containing the values of the members of this
-     * JSONObject.
-     * @param names A JSONArray containing a list of key strings. This
-     * determines the sequence of the values in the result.
-     * @return A JSONArray of values.
-     * @ If any of the values are non-finite numbers.
-   public JSONArray toJSONArray(JSONArray names)  {
-        if (names == null || names.length() == 0) {
-            return null;
-        }
-        JSONArray ja = new JSONArray();
-        for (int i = 0; i < names.length(); i += 1) {
-            ja.put(this.opt(names.getString(i)));
-        }
-        return ja;
-    }
-  */
     
     /* **
      * Make a JSON text of this JSONObject. For compactness, no whitespace
