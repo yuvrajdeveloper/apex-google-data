@@ -4,6 +4,16 @@ public class SpreadsheetService {
 	static final string SPR_SHEET_LIST_URL = 'http://spreadsheets.google.com/feeds/spreadsheets/private/full';	
 
 	GoogleService service = new GoogleService('Sheets');
+	
+	
+	public Boolean useClientLogin(String username, String password)
+	{
+		return service.authenticateWithClientLogin(username, password, 'wise');	
+	}
+	
+	//public void setUsername(string u) { service.username = u; }
+	//public void setPassword(string p) { service.password = p; }
+	
 	public void setAuthSubToken(string t) { service.AuthSubToken = t;	}
 	 
 	public string spreadsheetsfeed { get { return  SPR_SHEET_LIST_URL;	}}

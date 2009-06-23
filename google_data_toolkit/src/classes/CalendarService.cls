@@ -7,6 +7,11 @@ public class CalendarService {
     public static final string allCalendars = 'http://www.google.com/calendar/feeds/default/allcalendars/full';
     public static final string ownCalendars = 'http://www.google.com/calendar/feeds/default/owncalendars/full';
     
+    public Boolean useClientLogin(String username, String password)
+	{
+		return service.authenticateWithClientLogin(username, password, 'cl');	
+	}
+	
     public void makePutRequest( string editUrl, string body) {
         service.makePutRequest( editUrl, body);
     }

@@ -6,6 +6,11 @@ public class DocumentService {
     public static final string docsUrl = 'http://docs.google.com/feeds/documents/private/full/-/document';
     public static final string sheetsUrl =  'http://docs.google.com/feeds/documents/private/full/-/spreadsheet';
 
+	public Boolean useClientLogin(String username, String password)
+	{
+		return service.authenticateWithClientLogin(username, password, 'writely');	
+	}
+	
     public string documentsFeed { get { return docsUrl; }}
     
     public GoogleData getFeed(string url) { // pass in your own query params here
