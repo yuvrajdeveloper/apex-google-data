@@ -5,8 +5,75 @@
  * and parse their own responses
  */
 public class GoogleService {
+	
+	public static final Integer AUTH = 1;
+	public static final Integer BAD_AUTH = 2;
+	public static final Integer NOT_VERIFIED = 3;
+	public static final Integer TERMS_NOT_AGREED = 4;
+	public static final Integer CAPTCHA_REQUIRED = 5;
+	public static final Integer UNKNOWN = 6;
+	public static final Integer ACCOUNT_DELETED = 7;
+	public static final Integer ACCOUNT_EXPIRED = 8;
+	public static final Integer SERVICE_DISABLED = 9;
+	public static final Integer SERVICE_UNAVAILABLE = 10;
+	public static final Integer NO_MATCH = 99;
+	
+	Boolean useClientLoginAuthentication = false;
+	String clientLoginToken = null;
 
 	public GoogleService(string serviceName ) { } 
+
+	public Boolean authenticateWithClientLogin(String username, String passwd, String service)
+	{
+			this.useClientLoginAuthentication = true;
+			
+			Http m_http = new Http();
+            HttpRequest req = new HttpRequest();
+            String content = 'accountType=HOSTED_OR_GOOGLE&Email='+username+'&Passwd='+passwd+'&service='+service;
+            req.setEndpoint('https://www.google.com/accounts/ClientLogin');
+            req.setHeader('Content-Type','application/x-www-form-urlencoded');
+            req.setMethod('POST');
+            req.setBody(content);
+            
+            httpResponse response = null;
+            
+            try 
+            {
+				System.debug('HttpRequest :' +req);
+				Http http = new Http();
+				response = http.send(req);
+				System.debug('STATUS:'+ response.getStatusCode() );
+				if(response.getStatusCode() == 200)
+				{
+					if(this.getClientLoginResponseCode(response.getBody()) == AUTH)
+					{
+						clientLoginToken = response.getBody().substring(response.getBody().indexOf('Auth=')+5).trim();
+						System.debug('Client Login Authentication successful');
+						return  true;
+					}	
+					else
+					{
+						System.debug('Client Login Authentication failed. Body was: '+response.getBody());
+						return false;
+					}	
+				}
+				
+				// allow 201 Created as well, returned for upload or insert 	
+				if (response.getStatusCode() != 200 || response.getStatusCode() != 200 ) 
+				{	System.debug('STATUS:'+ response.getStatus() );
+					System.debug('STATUS_CODE:'+ response.getStatusCode() );
+					System.debug('BODY: '+ response.getBody() );
+							
+				} 
+            }	
+			catch( System.Exception e) 
+			{
+				System.debug('Error sending request');
+				System.debug('ERROR: '+ e);
+				System.debug('BODY: '+response.getBody());
+			}
+		return false;
+    }
 
  	/* 
 	 * based on 
@@ -88,7 +155,12 @@ public class GoogleService {
 	    	if( debug > 1) { system.debug( contentType ); }
 	    }
 	    
-		req.setHeader('Authorization','AuthSub token="' + this.AuthSubToken+'"');
+	    if(useClientLoginAuthentication)
+	    {
+	    	req.setHeader('Authorization','GoogleLogin auth='+this.clientLoginToken);
+	    }
+        else
+			req.setHeader('Authorization','AuthSub token="' + this.AuthSubToken+'"');
 	
 		if (bodyin != null) { 
 			if( debug > 1) { system.debug( bodyin ); }
@@ -164,6 +236,53 @@ public class GoogleService {
 	public static Schema.SObjectType getSobjectToken(string objname) { 
 		Map<String, Schema.SObjectType> gd = Schema.getGlobalDescribe(); 
 		return gd.get(objname);			
+	}
+	
+	private Integer getClientLoginResponseCode(String response)
+	{
+		if(response.contains('Auth='))
+		{
+			return AUTH;
+		}
+		else if(response.contains('BadAuthentication='))
+		{
+			return BAD_AUTH;
+		}
+		else if(response.contains('NotVerified='))
+		{
+			return NOT_VERIFIED;
+		}
+		else if(response.contains('TermsNotAgreed='))
+		{
+			return TERMS_NOT_AGREED;
+		}
+		else if(response.contains('CaptchaRequired='))
+		{
+			return CAPTCHA_REQUIRED;
+		}
+		else if(response.contains('Unknown='))
+		{
+			return UNKNOWN;
+		}
+		else if(response.contains('AccountDeleted='))
+		{
+			return ACCOUNT_DELETED;
+		}
+		else if(response.contains('AccountDisabled='))
+		{
+			return ACCOUNT_EXPIRED;
+		}
+		else if(response.contains('ServiceDisabled='))
+		{
+			return SERVICE_DISABLED;
+		}
+		else if(response.contains('ServiceUnavailable='))
+		{
+			return SERVICE_UNAVAILABLE;
+		}
+		else
+			return NO_MATCH;
+		
 	}
 	
 		
