@@ -39,7 +39,9 @@ public class SpreadsheetService {
 	}
 
 	public xmldom.Element getSpreadsheetById(string id) { 
-		GoogleData entryList = getFeed(	SPR_SHEET_LIST_URL);
+		//THIS FIRST LINE HAS THE FIX thx  jonathan rico  
+  		GoogleData entryList = getFeed(SPR_SHEET_LIST_URL+'/'+id);
+		
 		for(xmldom.Element entry:entryList.entries){
 			String idVal = entry.getElementByTagName('id').nodeValue;
 			if(entry.getElementByTagName('id').nodeValue.indexOf(id) > -1){
