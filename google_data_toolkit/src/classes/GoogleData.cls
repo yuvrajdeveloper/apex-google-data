@@ -22,7 +22,7 @@ public class GoogleData {
 	public string self { get { return GoogleData.getRelLink(feed,'self'); }}
 	
 	public string postUrl { get { // not all feeds have a post url, do check for null 
-		return GoogleData.getRelLink( feed, 'http://schemas.google.com/g/2005#post');
+		return GoogleData.getRelLink( feed, 'https://schemas.google.com/g/2005#post');
 	}}
 	
 	public static string getRelLink(xmldom.element e, string rtype ) { 
@@ -195,19 +195,19 @@ public class GoogleData {
 		}
 		public string getCellFeedUrl() {
  			return GoogleData.getRelLink( w, 
- 			'http://schemas.google.com/spreadsheets/2006#cellsfeed');
+ 			'https://schemas.google.com/spreadsheets/2006#cellsfeed');
  		}
 	 	public string cellFeedUrl { 
 	 		get { return GoogleData.getRelLink( w, 
-	 			'http://schemas.google.com/spreadsheets/2006#cellsfeed'); }
+	 			'https://schemas.google.com/spreadsheets/2006#cellsfeed'); }
 	 	} 
 	 	public string listFeedUrl { 
 	 		get { return GoogleData.getRelLink( w, 
-	 			'http://schemas.google.com/spreadsheets/2006#listfeed'); }
+	 			'https://schemas.google.com/spreadsheets/2006#listfeed'); }
 	 	} 
 	 	public string postUrl { 
 	 		get { return GoogleData.getRelLink( w, 
-	 			'http://schemas.google.com/g/2005#post'); }
+	 			'https://schemas.google.com/g/2005#post'); }
 	 	} 
 
 	 	public string editUrl { 
