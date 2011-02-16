@@ -1,5 +1,5 @@
 /* 
- * wrap and perform the HTTP request for all API's
+ * wrap and perform the HTTPs request for all API's
  * parse the GET responses, don't parse the POST
  * individual API's can still get at the POST methods 
  * and parse their own responses

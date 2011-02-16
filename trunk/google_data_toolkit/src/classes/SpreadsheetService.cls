@@ -1,7 +1,7 @@
 public class SpreadsheetService {
-	static final String WkSheetFeed = 'http://schemas.google.com/spreadsheets/2006#worksheetsfeed';
-	static final String GSX_NMSPACE = 'http://schemas.google.com/spreadsheets/2006/extended';
-	static final string SPR_SHEET_LIST_URL = 'http://spreadsheets.google.com/feeds/spreadsheets/private/full';	
+	static final String WkSheetFeed = 'https://schemas.google.com/spreadsheets/2006#worksheetsfeed';
+	static final String GSX_NMSPACE = 'https://schemas.google.com/spreadsheets/2006/extended';
+	static final string SPR_SHEET_LIST_URL = 'https://spreadsheets.google.com/feeds/spreadsheets/private/full';	
 
 	GoogleService service = new GoogleService('Sheets');
 	
@@ -72,7 +72,7 @@ public class SpreadsheetService {
 	public void updateCells ( GoogleData.Worksheet w ) {
 		// use batch to update these cells
 		// cells feed looks like this 
-		//http://spreadsheets.google.com/feeds/cells/o15385646727495067185.2758575337567427847/od4/private/full
+		//https://spreadsheets.google.com/feeds/cells/o15385646727495067185.2758575337567427847/od4/private/full
 		string batchFeedUrl = w.getCellFeedUrl() + '/batch'; 
 		service.makePostRequest( batchFeedUrl, w.getBatchFeedBody() );
 		// service.responseXml has the return value if needed
@@ -81,7 +81,7 @@ public class SpreadsheetService {
 	public void updateCells ( GoogleData.Worksheet w, list<GoogleData.Cell> celList ) {
 		// use batch to update these cells
 		// cells feed looks like this 
-		//http://spreadsheets.google.com/feeds/cells/o15385646727495067185.2758575337567427847/od4/private/full
+		//https://spreadsheets.google.com/feeds/cells/o15385646727495067185.2758575337567427847/od4/private/full
 		string batchFeedUrl = w.getCellFeedUrl() + '/batch'; 
 		service.makePostRequest( batchFeedUrl, w.getBatchFeedListBody(celList) );
 	}
