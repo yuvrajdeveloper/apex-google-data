@@ -161,7 +161,7 @@ public class AuthSubUtil {
         
         string checkUrl =  AuthSubUtil.getRequestUrl( 'https', 'tapp0.salesforce.com', 
             '/apex/gsession?id=a0AT0000000FO1QMAW',  // next  
-            'http://www.google.com/calendar/feeds/' );   // scope 
+            'https://www.google.com/calendar/feeds/' );   // scope 
             
         system.debug ( expected ) ; 
         system.debug ( checkUrl );   
@@ -174,7 +174,7 @@ public class AuthSubUtil {
         String strProto = 'https';
         String strHost = 'na2.salesforce.com';
         String strNextUrl = '/apex/authsub';
-        String strScopeUrl = 'http://spreadsheets.google.com/feeds/';
+        String strScopeUrl = 'https://spreadsheets.google.com/feeds/';
               
        	PageReference p = AuthSubUtil.getRequestPageReference( strProto, strHost, strNextUrl, strScopeUrl);
       	system.debug (p); 
