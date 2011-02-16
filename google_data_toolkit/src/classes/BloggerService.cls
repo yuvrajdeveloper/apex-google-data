@@ -113,8 +113,8 @@ public class BloggerService {
      * 
      * test methods below here 
      */
-    public static final string defaultFeed = 'http://www.blogger.com/feeds/default/blogs';
-    public static final string postUrl =   'http://schemas.google.com/g/2005#post';
+    public static final string defaultFeed = 'https://www.blogger.com/feeds/default/blogs';
+    public static final string postUrl =   'https://schemas.google.com/g/2005#post';
 
      
     //bloggerServieTest

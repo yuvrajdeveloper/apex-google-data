@@ -2,9 +2,9 @@ public class DocumentService {
     GoogleService service = new GoogleService('Documents');
     public void setAuthSubToken(string t) { service.AuthSubToken = t;   }
 
-    public static final string feedUrl =        'http://docs.google.com/feeds/documents/private/full/';
-    public static final string docsUrl = 'http://docs.google.com/feeds/documents/private/full/-/document';
-    public static final string sheetsUrl =  'http://docs.google.com/feeds/documents/private/full/-/spreadsheet';
+    public static final string feedUrl =        'https://docs.google.com/feeds/documents/private/full/';
+    public static final string docsUrl = 'https://docs.google.com/feeds/documents/private/full/-/document';
+    public static final string sheetsUrl =  'https://docs.google.com/feeds/documents/private/full/-/spreadsheet';
 
 	public Boolean useClientLogin(String username, String password)
 	{
@@ -129,8 +129,7 @@ public class DocumentService {
     public GoogleData uploadDocument (string body, string title, string contentType) {
         
         service.slug = title;
-        HttpResponse res = service.getFeedMethod('POST',
-            'http://docs.google.com/feeds/documents/private/full',
+        HttpResponse res = service.getFeedMethod('POST', feedUrl,
             body, 
             contentType);
         service.slug = null;

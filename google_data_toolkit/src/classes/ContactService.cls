@@ -16,7 +16,7 @@ public class ContactService {
      * http://www.google.com/m8/feeds/contacts/userEmail/full
      * http://www.google.com/m8/feeds/contacts/default/full
      */
-    public static final string defaultFeed = 'http://www.google.com/m8/feeds/contacts/default/full';
+    public static final string defaultFeed = 'https://www.google.com/m8/feeds/contacts/default/full';
      
        // Retrieving a photo for a contact
     public static testMethod  void getOnePhotoContact() {
@@ -215,7 +215,7 @@ public class ContactService {
         // to get a single contact you must have stored the self 
         // link for that contact 
         GoogleData oneCon = service.getFeed( 
-           'http://www.google.com/m8/feeds/contacts/sforcedemos%40gmail.com/full/7656a03108ee72bc');
+           'https://www.google.com/m8/feeds/contacts/sforcedemos%40gmail.com/full/7656a03108ee72bc');
         oneCon.dump(); 
     } 
     

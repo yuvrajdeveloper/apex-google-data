@@ -3,9 +3,9 @@ public class CalendarService {
     GoogleService service = new GoogleService('Calendar');
     public void setAuthSubToken(string t) { service.AuthSubToken = t;   }
 
-    public static final string defaultFeed = 'http://www.google.com/calendar/feeds/default';
-    public static final string allCalendars = 'http://www.google.com/calendar/feeds/default/allcalendars/full';
-    public static final string ownCalendars = 'http://www.google.com/calendar/feeds/default/owncalendars/full';
+    public static final string defaultFeed = 'https://www.google.com/calendar/feeds/default';
+    public static final string allCalendars = 'https://www.google.com/calendar/feeds/default/allcalendars/full';
+    public static final string ownCalendars = 'https://www.google.com/calendar/feeds/default/owncalendars/full';
     
     public Boolean useClientLogin(String username, String password)
 	{
