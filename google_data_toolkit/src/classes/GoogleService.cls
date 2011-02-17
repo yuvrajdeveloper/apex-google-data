@@ -32,6 +32,7 @@ public class GoogleService {
             String content = 'accountType=HOSTED_OR_GOOGLE&Email='+username+'&Passwd='+passwd+'&service='+service;
             req.setEndpoint('https://www.google.com/accounts/ClientLogin');
             req.setHeader('Content-Type','application/x-www-form-urlencoded');
+            req.setHeader('User-Agent','salesforce-toolkit-googledata/21');
             req.setMethod('POST');
             req.setBody(content);
             
